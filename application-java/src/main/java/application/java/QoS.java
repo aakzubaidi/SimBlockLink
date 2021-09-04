@@ -12,7 +12,7 @@ package application.java;
 public class QoS {
 
     //Id of Quality requirement
-    private long qosID;
+    private String qosID;
     //name of quality requirement
     private String qosName;
     // Requered Service Level (GraterThan, LessThan, Equals)
@@ -31,12 +31,12 @@ public class QoS {
         this.threshold = threshold;
 
         KeyTracker keyTracker = KeyTracker.getInstance();
-        this.qosID = keyTracker.incrementQosKey();
+        this.qosID = "Q".concat(Long.toString(keyTracker.incrementQosKey()));
     }
 
     
     public String getQosID() {
-        return Long.toString(qosID);
+        return qosID;
     }
 
 

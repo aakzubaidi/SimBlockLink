@@ -77,14 +77,20 @@ public class App {
 		BlockchainAPI api = new BlockchainAPI();
 		byte[] result = null;
 
-		// System.out.println("Submit Transaction: InitLedger creates the initial set of
-		// assets on the ledger.");
-		// contract.submitTransaction("InitLedger");
-
-		System.out.println("\n");
 		try {
 			// create qyality requirment
+			System.out.println("Create Quality Requirement");
 			result = api.submitTransaction(contract, "presistQoS", payload);
+		} catch (Exception e) {
+			System.err.println("Transaction Failure: " + e);
+		}
+
+
+		payload = new String[] {"0001", "1", "1", "1"};
+		try {
+			// create qyality requirment
+			System.out.println("report metric");
+			result = api.submitTransaction(contract, "reportMetric", payload);
 		} catch (Exception e) {
 			System.err.println("Transaction Failure: " + e);
 		}

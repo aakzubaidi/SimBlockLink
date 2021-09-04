@@ -28,7 +28,7 @@ public class BlockchainAPI {
 		try{
 			System.out.println("\n");
 
-			System.out.println("Create Quality Requirement");
+			System.out.println("submitting Transaction to contract: ("+ contract +") to invoke method: ("+ smartContractMethod+")");
 			result = contract.createTransaction("presistQoS")
 			.submit(payload);
 		} catch (ContractException | InterruptedException e) {
