@@ -16,7 +16,6 @@ import org.hyperledger.fabric.gateway.Wallet;
 import org.hyperledger.fabric.gateway.Wallets;
 import org.hyperledger.fabric.gateway.Network;
 import org.hyperledger.fabric.gateway.Contract;
-import org.hyperledger.fabric.gateway.ContractException;
 
 public class App {
 
@@ -25,6 +24,22 @@ public class App {
 	}
 
 	public static void main(String[] args) throws Exception {
+
+		LocalStorage localstorage = LocalStorage.getInstance();
+        // choose a an identity name for the simulator side.
+        localstorage.setmanagerIdentity("aliAlzubaidi1");
+        // name the QoS metric (throughput, latency, etc)
+        String qosName = ("testEclipse32");
+        // Requered Service Level (GraterThan, LessThan, Equals)
+        RequieredLevel requieredLevel = RequieredLevel.LessThan;
+        // set a threshold to test against
+        double threshold = 10;
+
+		//define quality requirement
+		QoS qos = new QoS(qosName, requieredLevel, threshold);
+
+
+
 		// enrolls the admin and registers the user
 		try {
 			EnrollAdmin.main(null);
@@ -52,7 +67,12 @@ public class App {
 		Network network = gateway.getNetwork("mychannel");
 		Contract contract = network.getContract("chaincode");
 
-		String[] payload = new String[] { "asset72267485236fa", "blue", "5", "Tomoko" };
+		String[] payload = new String[] { qos.getQosID(), qos.getQosName(), qos.getLevel().toString(), Double.toString(qos.getThreshold())};
+
+		System.out.println(qos.getQosID());
+		System.out.println(qos.getQosName());
+		System.out.println(qos.getLevel().toString());
+		System.out.println(Double.toString(qos.getThreshold()));
 
 		BlockchainAPI api = new BlockchainAPI();
 		byte[] result = null;
@@ -63,8 +83,7 @@ public class App {
 
 		System.out.println("\n");
 		try {
-			System.out.println("Create Quality Requirement");
-			// Non existing asset asset70 should throw Error
+			// create qyality requirment
 			result = api.submitTransaction(contract, "presistQoS", payload);
 		} catch (Exception e) {
 			System.err.println("Transaction Failure: " + e);
