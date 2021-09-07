@@ -24,6 +24,7 @@ import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
 public class RegisterUser {
 
 	public static void main(String[] args) throws Exception {
+		Manager manager = new Manager();
 
 		// Create a CA client for interacting with the CA.
 		Properties props = new Properties();
@@ -38,8 +39,9 @@ public class RegisterUser {
 		Wallet wallet = Wallets.newFileSystemWallet(Paths.get("wallet"));
 
 		// Check to see if we've already enrolled the user.
-		if (wallet.get("alo") != null) {
-			System.out.println("An identity for the user \"alo\" already exists in the wallet");
+		if (wallet.get(manager.getIdentity())!= null) {
+			System.out.println("An identity for the user ("+ manager.getIdentity()
+					+ ") already exists in the wallet");
 			return;
 		}
 
@@ -48,6 +50,7 @@ public class RegisterUser {
 			System.out.println("\"admin\" needs to be enrolled and added to the wallet first");
 			return;
 		}
+		
 		User admin = new User() {
 
 			@Override
@@ -94,14 +97,14 @@ public class RegisterUser {
 		};
 
 		// Register the user, enroll the user, and import the new identity into the wallet.
-		RegistrationRequest registrationRequest = new RegistrationRequest("alo");
-		registrationRequest.setAffiliation("org1.department1");
-		registrationRequest.setEnrollmentID("alo");
+		RegistrationRequest registrationRequest = new RegistrationRequest(manager.getIdentity());
+		//registrationRequest.setAffiliation("org1.department1");
+		registrationRequest.setEnrollmentID(manager.getIdentity());
 		String enrollmentSecret = caClient.register(registrationRequest, admin);
-		Enrollment enrollment = caClient.enroll("alo", enrollmentSecret);
+		Enrollment enrollment = caClient.enroll(manager.getIdentity(), enrollmentSecret);
 		Identity user = Identities.newX509Identity("Org1MSP", enrollment);
-		wallet.put("alo", user);
-		System.out.println("Successfully enrolled user \"alo\" and imported it into the wallet");
+		wallet.put(manager.getIdentity(), user);
+		System.out.println("Successfully enrolled user ("+ manager.getIdentity()
+				+ ") and imported it into the wallet");
 	}
-
 }
