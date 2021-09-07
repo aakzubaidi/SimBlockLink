@@ -18,8 +18,6 @@ public class LocalStorage {
     // store for incidents (QoSmetric, properties)
     public Map <String,QoS> qosStore = null;
 
-    // Monitoring Identity
-    private static String managerIdentity;
     // waitng time for the Violation Reporter. In seconds
     private static int delay;
 
@@ -37,13 +35,6 @@ public class LocalStorage {
         return single_instance;
     }
 
-    public String getmanagerIdentity() {
-        return managerIdentity;
-    }
-
-    public void setmanagerIdentity(String managerIdentity) {
-        LocalStorage.managerIdentity = managerIdentity;
-    }
 
     public int getDelay() {
         return delay;
@@ -52,11 +43,11 @@ public class LocalStorage {
     public static void setDelay(int delay) {
         LocalStorage.delay = delay;
     }
-	public Map<String, QoS> getIncidentsLocalStore() {
+	public Map<String, QoS> getQosStore() {
 		return qosStore;
 	}
 
-	public void setIncidentsLocalStore(Map<String, QoS> incidentsLocalStore) {
+	public void setQosStore(Map<String, QoS> incidentsLocalStore) {
 		this.qosStore = incidentsLocalStore;
 	}
 

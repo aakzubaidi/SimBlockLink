@@ -1,11 +1,9 @@
-/*
- * Copyright IBM Corp. All Rights Reserved.
- *
- * SPDX-License-Identifier: Apache-2.0
+/**
+ * @author @aakzubaidi Ali Alzubaidi
+ * 
+ * 
  */
 
-// Running TestApp: 
-// gradle runApp 
 
 package application.java;
 

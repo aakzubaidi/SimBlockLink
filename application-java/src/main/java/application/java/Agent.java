@@ -24,7 +24,7 @@ public class Agent {
 		// every time you have a reading about throghput, evaluate.
 
 		//get incident record of this QoS metric
-		qos = localStorage.getIncidentsLocalStore().get(QoSmetric);
+		qos = localStorage.getQosStore().get(QoSmetric);
 
 		// if there is a breach, then
 		if (level.equals(RequieredLevel.GraterThan)) {

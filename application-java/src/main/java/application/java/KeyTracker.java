@@ -9,7 +9,7 @@ public class KeyTracker {
     public static KeyTracker getInstance() {
         if (single_instance == null){
             single_instance = new KeyTracker();
-            qosKey = 0;
+            qosKey = 1;
         }
 
         return single_instance;

@@ -24,9 +24,17 @@ public class App {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Manager manager = new Manager();
-		String result = manager.generateIdentity("AliAlzubaidi");
+		ConnectionProfile connectionProfile = new ConnectionProfile();
+		connectionProfile.setPemFileLocation("../../fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem");
+		connectionProfile.setCaClientURL("https://localhost:7054");
+		connectionProfile.setAdminIdentity("admin");
+		connectionProfile.setAdminSecret("adminpw");
+		connectionProfile.setClientIdentity("AliAlzubaidi1");
+		
+		Manager manager = new Manager(connectionProfile);
+		String result = manager.generateIdentity();
 		System.out.println(result);
+
 
 
 
@@ -47,7 +55,7 @@ public class App {
 		Path networkConfigPath = Paths.get("..", "..", "fabric-samples", "test-network", "organizations", "peerOrganizations", "org1.example.com", "connection-org1.yaml");
 
 		// Configure the gateway connection used to access the network.
-		Gateway.Builder builder = Gateway.createBuilder().identity(wallet, manager.getIdentity()).networkConfig(networkConfigPath);
+		Gateway.Builder builder = Gateway.createBuilder().identity(wallet, connectionProfile.getClientIdentity()).networkConfig(networkConfigPath);
 
 		// Create a gateway connection
 		Gateway gateway = builder.connect();
