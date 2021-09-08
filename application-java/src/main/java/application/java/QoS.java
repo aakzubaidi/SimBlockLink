@@ -6,7 +6,7 @@ import org.hyperledger.fabric.gateway.Contract;
   * @apiNote Quality requirement model and controller
   * @author Ali Alzubaidi
   */
-  enum RequieredLevel {
+enum RequieredLevel {
 
     GraterThan, LessThan, Equals;
 }

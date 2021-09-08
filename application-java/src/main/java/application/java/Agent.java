@@ -11,25 +11,20 @@ import java.net.MalformedURLException;
 
 
 public class Agent {
-	private static LocalStorage localStorage;
-	private static QoS qos;
 
 
 	public Agent() throws MalformedURLException {
-		localStorage = LocalStorage.getInstance();
+
 	}
 
-	public void evaluateMonitoringMetric(String QoSmetric, double monitoringReading, RequieredLevel level,
-			double threshold) throws Exception {
-		// every time you have a reading about throghput, evaluate.
+	public void evaluateGeneratedMetric(QoS qos, double generatedMetric) throws Exception {
+		// every time you have a reading about a metric, evaluate.
 
-		//get incident record of this QoS metric
-		qos = localStorage.getQosStore().get(QoSmetric);
 
 		// if there is a breach, then
-		if (level.equals(RequieredLevel.GraterThan)) {
+		if (qos.getLevel().equals(RequieredLevel.GraterThan.toString())) {
 
-			if (monitoringReading < threshold) {
+			if (generatedMetric < Double.valueOf(qos.getThreshold())) {
 				//System.out.println("---- A Breach observed!!!------> ");
 				qos.setBreaches(qos.getBreaches() + 1);
 			} else {
@@ -40,9 +35,9 @@ public class Agent {
 
 			}
 
-		} else if (level.equals(RequieredLevel.LessThan)) {
+		} else if (qos.getLevel().equals(RequieredLevel.LessThan.toString())) {
 
-			if (monitoringReading > threshold) {
+			if (generatedMetric > Double.valueOf(qos.getThreshold())) {
 				//System.out.println("---- A Breach observed!!!------> ");
 				qos.setBreaches(qos.getBreaches() + 1);
 			} else {
@@ -53,9 +48,9 @@ public class Agent {
 				qos.setCompliantLogs(qos.getCompliantLogs() + 1);
 			}
 
-		} else if (level.equals(RequieredLevel.LessThan)) {
+		} else if (qos.getLevel().equals(RequieredLevel.Equals.toString())) {
 
-			if (monitoringReading != threshold) {
+			if (generatedMetric != Double.valueOf(qos.getThreshold())) {
 				//System.out.println("---- A Breach observed!!!------> ");
 				qos.setBreaches(qos.getBreaches() + 1);
 			} else {

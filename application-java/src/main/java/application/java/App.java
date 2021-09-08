@@ -11,6 +11,8 @@ package application.java;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
+
 import org.hyperledger.fabric.gateway.Gateway;
 import org.hyperledger.fabric.gateway.Wallet;
 import org.hyperledger.fabric.gateway.Wallets;
@@ -29,7 +31,7 @@ public class App {
 		connectionProfile.setCaClientURL("https://localhost:7054");
 		connectionProfile.setAdminIdentity("admin");
 		connectionProfile.setAdminSecret("adminpw");
-		connectionProfile.setClientIdentity("AliAlzubaidi1");
+		connectionProfile.setClientIdentity("AliAlzubaidi2");
 		
 		Manager manager = new Manager(connectionProfile);
 		String result = manager.generateIdentity();
@@ -71,6 +73,19 @@ public class App {
 		System.out.println(qosdata);
 		
 		BlockchainAPI api = new BlockchainAPI();
+
+
+		Agent agent = new Agent() ;
+
+		double TransmissionTime = 2;
+        for (int i = 1; i <= 3; i++) {
+            agent.evaluateGeneratedMetric(qos, TransmissionTime);
+            // rate of metrics reporting to the duration that takes the scheduler to report
+            // incidents
+            //TimeUnit.SECONDS.sleep(LocalStorage.getDelay() / 2);
+        }
+
+
 
 		String [] payload = new String[] {"0001", "1", "1", "1"};
 		try {

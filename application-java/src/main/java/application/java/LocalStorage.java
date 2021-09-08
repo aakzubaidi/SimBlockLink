@@ -36,7 +36,7 @@ public class LocalStorage {
     }
 
 
-    public int getDelay() {
+    public static int getDelay() {
         return delay;
     }
 
