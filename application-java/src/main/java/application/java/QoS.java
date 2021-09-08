@@ -1,7 +1,5 @@
 package application.java;
 
-import org.hyperledger.fabric.gateway.Contract;
-
 /**
   * @apiNote Quality requirement model and controller
   * @author Ali Alzubaidi
@@ -27,13 +25,10 @@ public class QoS {
     // set a threshold to test against
     private String threshold;
     // count of current compliant logs, up to where we find a set of breaches
-    private int compliantLogs;
+    private int compliantCount;
     // count of current breaches
-    private int Breaches;
+    private int breachCount;
     //the name of the contract
-    private Contract contract;
-    // method for creating qos
-    private String method;
 
 
     /**
@@ -45,19 +40,14 @@ public class QoS {
      * @param threshold value of the quality requirement 
      * @param unit unit of the value (ms, s, m, h)
      */
-    public QoS (Contract contract, String method, String qosName, RequieredLevel level, double threshold, Unit unit){
+    public QoS (String qosName, RequieredLevel level, double threshold, Unit unit){
 
-        this.contract = contract;
-        this.method = method;
         KeyTracker keyTracker = KeyTracker.getInstance();
         this.qosID = "Q".concat(Long.toString(keyTracker.incrementQosKey()));
         this.qosName = qosName;
         this.level = level.toString();
         this.threshold = String.valueOf(threshold);
      
-
-        // Create qos at both sides, the blockchain-side and client-side.
-        createQos();
     }
 
     
@@ -80,42 +70,24 @@ public class QoS {
     }
 
 
-    public int getCompliantLogs() {
-        return compliantLogs;
+    public int getCompliantCount() {
+        return compliantCount;
     }
 
-    public void setCompliantLogs(int compliantLogs) {
-        this.compliantLogs = compliantLogs;
+    public void setCompliantCount(int compliantCount) {
+        this.compliantCount = compliantCount;
     }
 
-    public int getBreaches() {
-        return Breaches;
+    public int getBreachCount() {
+        return breachCount;
     }
 
-    public void setBreaches(int breaches) {
-        Breaches = breaches;
+    public void setBreachCount(int breachCount) {
+        this.breachCount = breachCount;
     }
 
 
-    private String createQos ()
-    {
-        String result = null;
-        String[] payload = new String[] {this.qosID, this.qosName, this.level, this.threshold};
-        System.out.println(payload);
-        BlockchainAPI api = new BlockchainAPI();
-
-        try {
-			// create qyality requirment
-			System.out.println("Create Quality Requirement");
-			result = api.submitTransaction(this.contract, this.method , payload);
-		} catch (Exception e) {
-			System.err.println("Transaction Failure: " + e);
-		}
-        
-
-        System.out.println("Status of creating quality requirement at blockchain side: \n" + result);
-        return result;
-    }
+    
 
 
 }

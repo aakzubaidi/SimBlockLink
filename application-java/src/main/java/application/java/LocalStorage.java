@@ -1,5 +1,4 @@
 package application.java;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -16,7 +15,7 @@ public class LocalStorage {
     // static variable single_instance of type Singleton
     private static LocalStorage single_instance = null;
     // store for incidents (QoSmetric, properties)
-    public Map <String,QoS> qosStore = null;
+    public ConcurrentHashMap <String,QoS> qosStore = null;
 
     // waitng time for the Violation Reporter. In seconds
     private static int delay;
@@ -43,12 +42,9 @@ public class LocalStorage {
     public static void setDelay(int delay) {
         LocalStorage.delay = delay;
     }
-	public Map<String, QoS> getQosStore() {
-		return qosStore;
-	}
 
-	public void setQosStore(Map<String, QoS> incidentsLocalStore) {
-		this.qosStore = incidentsLocalStore;
+	public ConcurrentHashMap<String, QoS> getQosStore() {
+		return qosStore;
 	}
 
 }

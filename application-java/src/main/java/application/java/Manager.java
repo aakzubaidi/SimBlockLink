@@ -2,7 +2,9 @@ package application.java;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.util.concurrent.ConcurrentHashMap;
 
+import org.hyperledger.fabric.gateway.Contract;
 import org.hyperledger.fabric.sdk.exception.CryptoException;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 
@@ -38,14 +40,33 @@ public class Manager {
 
 
 
-    public String addQosToConcurrentStorage (QoS qoS)
+
+    public String createQos (Contract contract, String method, QoS qos)
     {
+        String result = null;
+        String[] payload = new String[] {qos.getQosID(), qos.getQosName(), qos.getLevel(), qos.getThreshold()};
+        System.out.println(payload);
+        BlockchainAPI api = new BlockchainAPI();
+
+        try {
+			// create qyality requirment
+			System.out.println("Create Quality Requirement");
+			result = api.submitTransaction(contract, method , payload);
+		} catch (Exception e) {
+			System.err.println("Transaction Failure: " + e);
+		}
+
+         //add this Qos metric to a golable array list to be discoverable by schesuled reporters
+		localstorage.getQosStore().put(qos.getQosID(), qos);
         
 
-        //add this Qos metric to a golable array list to be discoverable by schesuled reporters
-		localstorage.getQosStore().put(qoS.getQosID(), qoS);
-
-        return localstorage.getQosStore().get(qoS.getQosID()).toString();
+        System.out.println("Status of creating quality requirement at blockchain side: \n" + result);
+        return result;
     }
+
+    
+    public ConcurrentHashMap<String, QoS> getQosStore() {
+        return localstorage.getQosStore();
+	}  
 
 }

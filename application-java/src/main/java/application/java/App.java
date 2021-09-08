@@ -11,7 +11,7 @@ package application.java;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
+
 
 import org.hyperledger.fabric.gateway.Gateway;
 import org.hyperledger.fabric.gateway.Wallet;
@@ -68,11 +68,10 @@ public class App {
 		//define quality requirement
 		//provide (contract, quality metric name, required level, threshold)
 		//example (contract, method, latency, LessThan, 2, s)
-		QoS qos = new QoS(contract, "presistQoS", "latency", RequieredLevel.LessThan, 2,  Unit.s);
-		String qosdata = manager.addQosToConcurrentStorage(qos);
-		System.out.println(qosdata);
+		QoS qos = new QoS( "latency", RequieredLevel.LessThan, 2,  Unit.s);
+		manager.createQos(contract, "presistQoS",qos);
 		
-		BlockchainAPI api = new BlockchainAPI();
+		
 
 
 		Agent agent = new Agent() ;
@@ -85,8 +84,12 @@ public class App {
             //TimeUnit.SECONDS.sleep(LocalStorage.getDelay() / 2);
         }
 
+		System.out.println("Breaches: "+ manager.getQosStore().get(qos.getQosID()).getBreachCount());
+		System.out.println("Breaches: "+ manager.getQosStore().get(qos.getQosID()).getCompliantCount());
 
 
+
+		BlockchainAPI api = new BlockchainAPI();
 		String [] payload = new String[] {"0001", "1", "1", "1"};
 		try {
 			// create qyality requirment

@@ -26,12 +26,12 @@ public class Agent {
 
 			if (generatedMetric < Double.valueOf(qos.getThreshold())) {
 				//System.out.println("---- A Breach observed!!!------> ");
-				qos.setBreaches(qos.getBreaches() + 1);
+				qos.setBreachCount(qos.getBreachCount() + 1);
 			} else {
 
 				//System.out.println(
 						//"---- Compliant and all good! :-) ---- no need to report to blockchain --->");
-				qos.setCompliantLogs(qos.getCompliantLogs() + 1);
+				qos.setCompliantCount(qos.getCompliantCount()+1);
 
 			}
 
@@ -39,26 +39,26 @@ public class Agent {
 
 			if (generatedMetric > Double.valueOf(qos.getThreshold())) {
 				//System.out.println("---- A Breach observed!!!------> ");
-				qos.setBreaches(qos.getBreaches() + 1);
+				qos.setBreachCount(qos.getBreachCount() + 1);
 			} else {
 
 
 				//System.out.println(
 						//"---- Compliant and all good! :-) ---- no need to report to blockchain --->");
-				qos.setCompliantLogs(qos.getCompliantLogs() + 1);
+				qos.setCompliantCount(qos.getCompliantCount() + 1);
 			}
 
 		} else if (qos.getLevel().equals(RequieredLevel.Equals.toString())) {
 
 			if (generatedMetric != Double.valueOf(qos.getThreshold())) {
 				//System.out.println("---- A Breach observed!!!------> ");
-				qos.setBreaches(qos.getBreaches() + 1);
+				qos.setBreachCount(qos.getBreachCount() + 1);
 			} else {
 
 
 				//System.out.println(
 						//"---- Compliant and all good! :-) ---- no need to report to blockchain --->");
-				qos.setCompliantLogs(qos.getCompliantLogs() + 1);
+				qos.setCompliantCount(qos.getCompliantCount() + 1);
 
 			}
 
