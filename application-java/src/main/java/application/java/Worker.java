@@ -32,13 +32,14 @@ public class Worker extends TimerTask {
         this.qosID = qos.getQosID();
         this.qosStore = manager.getQosStore();
 
+        System.out.println("Done consutructing");
 
     }
 
     @Override
     public void run() {
-        System.out.println("I am  thread whose name is: " + Thread.currentThread().getName() + " with ID: "
-                + Thread.currentThread().getId() + " --- checking for any identified incident about("+qos.getQosName()+")");
+        // System.out.println("I am  thread whose name is: " + Thread.currentThread().getName() + " with ID: "
+        //         + Thread.currentThread().getId() + " --- checking for any identified incident about("+qos.getQosName()+")");
 
         if (qosStore.get(qosID).getBreachCount() > 0 || qosStore.get(qosID).getCompliantCount() > 0) {
             try {
@@ -75,6 +76,7 @@ public class Worker extends TimerTask {
                     Thread.currentThread().getName() + "  has sucessfully reported the incident to blockchain");
         }
 
+        
     }
 
 }
