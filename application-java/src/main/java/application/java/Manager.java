@@ -90,7 +90,7 @@ public class Manager {
 
         try {
 			// create qyality requirment
-			System.out.println("Create Quality Requirement");
+			System.out.println("reporting metric to the blockchain-side");
 			result = api.submitTransaction(contract, method , payload);
 		} catch (Exception e) {
 			System.err.println("Transaction Failure: " + e);

@@ -74,7 +74,10 @@ public class App {
 		QoS qos = new QoS( "latency", RequieredLevel.LessThan, 2,  Unit.s);
 		manager.createQos(contract, "presistQoS",qos);
 		
-		
+		// schedule workers
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);
+        scheduler.scheduleAtFixedRate(new Worker(manager, contract, "reportMetric", qos), 3 , 2,
+                TimeUnit.SECONDS);
 
 
 		Agent latencyAgent = new Agent(manager, qos) ;
@@ -88,25 +91,12 @@ public class App {
         }
 
 		System.out.println("Breaches: "+ manager.getQosStore().get(qos.getQosID()).getBreachCount());
-		System.out.println("Breaches: "+ manager.getQosStore().get(qos.getQosID()).getCompliantCount());
+		System.out.println("Compliant: "+ manager.getQosStore().get(qos.getQosID()).getCompliantCount());
 
 
 
-		// schedule workers
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);
-        scheduler.scheduleAtFixedRate(new Worker(manager, contract, "reportMetric", qos), 1 , 1,
-                TimeUnit.SECONDS);
+		
 
-
-		BlockchainAPI api = new BlockchainAPI();
-		String [] payload = new String[] {"0001", "1", "1", "1"};
-		try {
-			// create qyality requirment
-			System.out.println("report metric");
-			result = api.submitTransaction(contract, "reportMetric", payload);
-		} catch (Exception e) {
-			System.err.println("Transaction Failure: " + e);
-		}
 
 	}
 }

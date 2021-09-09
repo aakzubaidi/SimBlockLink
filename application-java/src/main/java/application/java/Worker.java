@@ -38,15 +38,13 @@ public class Worker extends TimerTask {
     @Override
     public void run() {
         System.out.println("I am  thread whose name is: " + Thread.currentThread().getName() + " with ID: "
-                + Thread.currentThread().getId() + " --- checking for any identified incident about("+qosID+")");
-            // for testing purposes, print current incidents records for this QoS metric
-            manager.printQosStatus(Thread.currentThread().getName(), String.valueOf(Thread.currentThread().getId()), qos);
+                + Thread.currentThread().getId() + " --- checking for any identified incident about("+qos.getQosName()+")");
 
-        if (qosStore.get(qosID).getBreachCount() > 0) {
+        if (qosStore.get(qosID).getBreachCount() > 0 || qosStore.get(qosID).getCompliantCount() > 0) {
             try {
-                System.out.println(Thread.currentThread().getName() + " with ID: "
-                + Thread.currentThread().getId() +
-                        " has identified breaches about("+qosID+"). it is now reporting them to the blockchain");
+                // System.out.println(Thread.currentThread().getName() + " with ID: "
+                // + Thread.currentThread().getId() +
+                //         " has identified breaches about("+qosID+"). it is now reporting them to the blockchain");
                 submittedBreaches = qosStore.get(qosID).getBreachCount();
                 submittedCompliant = qosStore.get(qosID).getCompliantCount();
                 //violationRepoter.submitTransaction(qosID, submittedBreaches, submittedCompliant);

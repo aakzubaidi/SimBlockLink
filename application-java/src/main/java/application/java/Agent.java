@@ -22,6 +22,7 @@ public class Agent {
 		this.manager = manager;
 		this.qosID = qos.getQosID();
         this.qosStore = this.manager.getQosStore();
+		this.qos = qos;
 	}
 
 	public void evaluateGeneratedMetric(double generatedMetric) throws Exception {

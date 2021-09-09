@@ -41,14 +41,11 @@ public class BlockchainAPI {
 				result = contract.createTransaction("presistQoS")
 				.submit(payload);
 				readableResult = new String(result, StandardCharsets.UTF_8);
-
-				if (readableResult.contains("success")){
-					System.out.println(readableResult.contains("success"));
-					TransactionStatus = "success";
-				}
+				TransactionStatus = "success";
 			} catch (ContractException | InterruptedException e) {
 				e.printStackTrace();
 			}
+			attempt++;
 		}		
 
 		return readableResult;
