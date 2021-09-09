@@ -25,23 +25,31 @@ public class BlockchainAPI {
 	 */
 	public String submitTransaction(Contract contract, String smartContractMethod, String[] payload) throws Exception {
 
+		int attempt = 0;
+		int maxRetry = 5;
+		
 		byte[] result = null;
 		String readableResult = null;
 
-		// System.out.println("Submit Transaction: InitLedger creates the initial set of
-		// assets on the ledger.");
-		// contract.submitTransaction("InitLedger");
+		// assume the transaction will fail
+        String TransactionStatus = "fail";
 
-		try{
+		// try submitting until otherwise (until transaction succeeds)
+        while (attempt < maxRetry && TransactionStatus.equals("fail")) {
+			try{
+				System.out.println("Attempt "+ attempt+ ": submitting Transaction to contract: ("+ contract +") to invoke method: ("+ smartContractMethod+")");
+				result = contract.createTransaction("presistQoS")
+				.submit(payload);
+				readableResult = new String(result, StandardCharsets.UTF_8);
 
-			System.out.println("submitting Transaction to contract: ("+ contract +") to invoke method: ("+ smartContractMethod+")");
-			result = contract.createTransaction("presistQoS")
-			.submit(payload);
-		} catch (ContractException | InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		readableResult = new String(result, StandardCharsets.UTF_8);
+				if (readableResult.contains("success")){
+					System.out.println(readableResult.contains("success"));
+					TransactionStatus = "success";
+				}
+			} catch (ContractException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		}		
 
 		return readableResult;
 

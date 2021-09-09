@@ -43,7 +43,7 @@ public class QoS {
     public QoS (String qosName, RequieredLevel level, double threshold, Unit unit){
 
         KeyTracker keyTracker = KeyTracker.getInstance();
-        this.qosID = "Q".concat(Long.toString(keyTracker.incrementQosKey()));
+        this.qosID = keyTracker.getQosKey();
         this.qosName = qosName;
         this.level = level.toString();
         this.threshold = String.valueOf(threshold);

@@ -12,12 +12,14 @@ public class Manager {
 
     private ConnectionProfile connectionProfile;
     private LocalStorage localstorage;
+    BlockchainAPI api;
 
 
     public Manager(ConnectionProfile connectionProfile) {
 
         localstorage = LocalStorage.getInstance();
         this.connectionProfile = connectionProfile;
+        this.api = new BlockchainAPI();
     }
 
     public String generateIdentity() throws MalformedURLException, CryptoException, InvalidArgumentException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
@@ -46,7 +48,6 @@ public class Manager {
         String result = null;
         String[] payload = new String[] {qos.getQosID(), qos.getQosName(), qos.getLevel(), qos.getThreshold()};
         System.out.println(payload);
-        BlockchainAPI api = new BlockchainAPI();
 
         try {
 			// create qyality requirment
@@ -67,6 +68,38 @@ public class Manager {
     
     public ConcurrentHashMap<String, QoS> getQosStore() {
         return localstorage.getQosStore();
-	}  
+	}
+
+
+    public void printQosStatus(String threadName, String threadID, QoS qos) {
+        System.out.println("## Reported incident records about: (" + qos.getQosName() + ") from "+ threadName + " with ID: "
+        + threadID +"\n"+
+        "----> Current Breaches: " + qos.getBreachCount()+"\n" +
+        "----> current Compliant Logs: " + qos.getCompliantCount());
+
+    }
+
+
+
+
+   
+    public String reportMetrics (Contract contract, String method, String[] payload)
+    {
+
+        String result = null;
+
+        try {
+			// create qyality requirment
+			System.out.println("Create Quality Requirement");
+			result = api.submitTransaction(contract, method , payload);
+		} catch (Exception e) {
+			System.err.println("Transaction Failure: " + e);
+		}
+
+        return result;
+
+    }
+
+
 
 }

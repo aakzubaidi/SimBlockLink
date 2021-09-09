@@ -12,6 +12,9 @@ package application.java;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.hyperledger.fabric.gateway.Gateway;
 import org.hyperledger.fabric.gateway.Wallet;
@@ -74,11 +77,11 @@ public class App {
 		
 
 
-		Agent agent = new Agent() ;
+		Agent latencyAgent = new Agent(manager, qos) ;
 
 		double TransmissionTime = 2;
         for (int i = 1; i <= 3; i++) {
-            agent.evaluateGeneratedMetric(qos, TransmissionTime);
+            latencyAgent.evaluateGeneratedMetric(TransmissionTime);
             // rate of metrics reporting to the duration that takes the scheduler to report
             // incidents
             //TimeUnit.SECONDS.sleep(LocalStorage.getDelay() / 2);
@@ -87,6 +90,12 @@ public class App {
 		System.out.println("Breaches: "+ manager.getQosStore().get(qos.getQosID()).getBreachCount());
 		System.out.println("Breaches: "+ manager.getQosStore().get(qos.getQosID()).getCompliantCount());
 
+
+
+		// schedule workers
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);
+        scheduler.scheduleAtFixedRate(new Worker(manager, contract, "reportMetric", qos), 1 , 1,
+                TimeUnit.SECONDS);
 
 
 		BlockchainAPI api = new BlockchainAPI();

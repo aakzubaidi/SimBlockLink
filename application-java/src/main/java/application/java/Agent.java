@@ -1,6 +1,7 @@
 package application.java;
 
 import java.net.MalformedURLException;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @apiNote This for communicating and reporting violation to the blockchain
@@ -11,13 +12,19 @@ import java.net.MalformedURLException;
 
 
 public class Agent {
+	private Manager manager;
+	private String qosID;
+    private QoS qos;
+    ConcurrentHashMap<String, QoS> qosStore;
 
 
-	public Agent() throws MalformedURLException {
-
+	public Agent(Manager manager, QoS qos) throws MalformedURLException {
+		this.manager = manager;
+		this.qosID = qos.getQosID();
+        this.qosStore = this.manager.getQosStore();
 	}
 
-	public void evaluateGeneratedMetric(QoS qos, double generatedMetric) throws Exception {
+	public void evaluateGeneratedMetric(double generatedMetric) throws Exception {
 		// every time you have a reading about a metric, evaluate.
 
 
@@ -26,12 +33,12 @@ public class Agent {
 
 			if (generatedMetric < Double.valueOf(qos.getThreshold())) {
 				//System.out.println("---- A Breach observed!!!------> ");
-				qos.setBreachCount(qos.getBreachCount() + 1);
+				qosStore.get(qosID).setBreachCount(qos.getBreachCount() + 1);
 			} else {
 
 				//System.out.println(
 						//"---- Compliant and all good! :-) ---- no need to report to blockchain --->");
-				qos.setCompliantCount(qos.getCompliantCount()+1);
+				qosStore.get(qosID).setCompliantCount(qos.getCompliantCount()+1);
 
 			}
 
@@ -39,26 +46,26 @@ public class Agent {
 
 			if (generatedMetric > Double.valueOf(qos.getThreshold())) {
 				//System.out.println("---- A Breach observed!!!------> ");
-				qos.setBreachCount(qos.getBreachCount() + 1);
+				qosStore.get(qosID).setBreachCount(qos.getBreachCount() + 1);
 			} else {
 
 
 				//System.out.println(
 						//"---- Compliant and all good! :-) ---- no need to report to blockchain --->");
-				qos.setCompliantCount(qos.getCompliantCount() + 1);
+				qosStore.get(qosID).setCompliantCount(qos.getCompliantCount() + 1);
 			}
 
 		} else if (qos.getLevel().equals(RequieredLevel.Equals.toString())) {
 
 			if (generatedMetric != Double.valueOf(qos.getThreshold())) {
 				//System.out.println("---- A Breach observed!!!------> ");
-				qos.setBreachCount(qos.getBreachCount() + 1);
+				qosStore.get(qosID).setBreachCount(qos.getBreachCount() + 1);
 			} else {
 
 
 				//System.out.println(
 						//"---- Compliant and all good! :-) ---- no need to report to blockchain --->");
-				qos.setCompliantCount(qos.getCompliantCount() + 1);
+				qosStore.get(qosID).setCompliantCount(qos.getCompliantCount() + 1);
 
 			}
 

@@ -17,12 +17,9 @@ public class LocalStorage {
     // store for incidents (QoSmetric, properties)
     public ConcurrentHashMap <String,QoS> qosStore = null;
 
-    // waitng time for the Violation Reporter. In seconds
-    private static int delay;
 
     // private constructor restricted to this class itself
     private LocalStorage() {
-        delay = 10;
         qosStore = new ConcurrentHashMap <String,QoS>();
     }
 
@@ -32,15 +29,6 @@ public class LocalStorage {
             single_instance = new LocalStorage();
 
         return single_instance;
-    }
-
-
-    public static int getDelay() {
-        return delay;
-    }
-
-    public static void setDelay(int delay) {
-        LocalStorage.delay = delay;
     }
 
 	public ConcurrentHashMap<String, QoS> getQosStore() {
