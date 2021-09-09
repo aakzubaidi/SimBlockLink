@@ -62,6 +62,7 @@ public class ChaincodeContract implements ContractInterface {
         String mesaage = "";
 
         Metric metric = new Metric();
+        metric.setQosID(qosID);
         metric.setCompliantCount(compliantCount);
         metric.setBreachCount(breachCount);
 
@@ -78,6 +79,8 @@ public class ChaincodeContract implements ContractInterface {
 
         return mesaage;
     }
+
+    
     
 
 }

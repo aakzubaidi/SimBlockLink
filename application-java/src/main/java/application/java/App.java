@@ -76,18 +76,18 @@ public class App {
 		
 		// schedule workers
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);
-        scheduler.scheduleAtFixedRate(new Worker(manager, contract, "reportMetric", qos), 3 , 2,
+        scheduler.scheduleAtFixedRate(new Worker(manager, contract, "reportMetric", qos), 3 , 3,
                 TimeUnit.SECONDS);
 
 
 		Agent latencyAgent = new Agent(manager, qos) ;
 
-		double TransmissionTime = 2;
-        for (int i = 1; i <= 3; i++) {
+		double TransmissionTime = 3;
+        for (int i = 1; i <= 25; i++) {
             latencyAgent.evaluateGeneratedMetric(TransmissionTime);
             // rate of metrics reporting to the duration that takes the scheduler to report
             // incidents
-            //TimeUnit.SECONDS.sleep(LocalStorage.getDelay() / 2);
+        TimeUnit.SECONDS.sleep(5);
         }
 
 		System.out.println("Breaches: "+ manager.getQosStore().get(qos.getQosID()).getBreachCount());
