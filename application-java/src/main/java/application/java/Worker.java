@@ -1,8 +1,10 @@
 package application.java;
+
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.hyperledger.fabric.gateway.Contract;
+
 /**
  * @apiNote This for scheduling the violation reporting service until the
  *          monitoried app is back to normal or timeout is reached
@@ -19,7 +21,6 @@ public class Worker extends TimerTask {
     private int submittedBreaches;
     private int submittedCompliant;
     private String qosID;
-    private QoS qos;
     ConcurrentHashMap<String, QoS> qosStore;
 
     public Worker(Manager manager, Contract contract, String method, QoS qos) {
@@ -38,25 +39,27 @@ public class Worker extends TimerTask {
 
     @Override
     public void run() {
-        // System.out.println("I am  thread whose name is: " + Thread.currentThread().getName() + " with ID: "
-        //         + Thread.currentThread().getId() + " --- checking for any identified incident about("+qos.getQosName()+")");
 
         if (qosStore.get(qosID).getBreachCount() > 0 || qosStore.get(qosID).getCompliantCount() > 0) {
             try {
                 // System.out.println(Thread.currentThread().getName() + " with ID: "
                 // + Thread.currentThread().getId() +
-                //         " has identified breaches about("+qosID+"). it is now reporting them to the blockchain");
+                // " has identified breaches about("+qosID+"). it is now reporting them to the
+                // blockchain");
                 submittedBreaches = qosStore.get(qosID).getBreachCount();
                 submittedCompliant = qosStore.get(qosID).getCompliantCount();
-                //violationRepoter.submitTransaction(qosID, submittedBreaches, submittedCompliant);
-                String [] payload = new String [] {keyTracker.getMetricKey(), qosID, String.valueOf(submittedCompliant), String.valueOf(submittedBreaches)};
+                System.out.println(Thread.currentThread().getName() +": current QoS status: Compliant count: " + submittedCompliant + "|| Breach count: "
+                        + submittedBreaches);
+                // violationRepoter.submitTransaction(qosID, submittedBreaches,
+                // submittedCompliant);
+                String[] payload = new String[] { keyTracker.getMetricKey(), qosID, String.valueOf(submittedCompliant),
+                        String.valueOf(submittedBreaches) };
                 manager.reportMetrics(contract, method, payload);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
             int deltaBreaches = qosStore.get(qosID).getBreachCount() - submittedBreaches;
-            System.out.println( "deltaBreaches = "+ deltaBreaches);
             if (deltaBreaches >= 0) {
                 qosStore.get(qosID).setBreachCount(deltaBreaches);
             } else {
@@ -65,7 +68,6 @@ public class Worker extends TimerTask {
             }
 
             int deltaCompliant = qosStore.get(qosID).getCompliantCount() - submittedCompliant;
-            System.out.println( "deltaCompliant = "+ deltaCompliant);
             if (deltaCompliant >= 0) {
                 qosStore.get(qosID).setCompliantCount(deltaCompliant);
             } else {
@@ -73,10 +75,9 @@ public class Worker extends TimerTask {
 
             }
             System.out.println(
-                    Thread.currentThread().getName() + "  has sucessfully reported the incident to blockchain");
+                    Thread.currentThread().getName() + ": Subcessfully reported metrics to blockchain \n current QoS Status: Compliant count: " + deltaCompliant + "|| Breach count: " + deltaBreaches);
         }
 
-        
     }
 
 }
