@@ -27,6 +27,8 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'
     implementation 'org.hyperledger.fabric:fabric-gateway-java:2.2.0'
+    implementation 'io.prometheus:simpleclient:0.12.0'
+    implementation 'io.prometheus:simpleclient_httpserver:0.12.0'
 }
 
 application {

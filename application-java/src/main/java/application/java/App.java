@@ -37,8 +37,8 @@ public class App {
 		connectionProfile.setClientIdentity("AliAlzubaidi2");
 		
 		Manager manager = new Manager(connectionProfile);
-		String result = manager.generateIdentity();
-		System.out.println(result);
+		manager.generateIdentity();
+		manager.createMetricExporter(8000);
 
 
 
@@ -83,7 +83,7 @@ public class App {
 		Agent latencyAgent = new Agent(manager, qos) ;
 
 		double TransmissionTime = 3;
-        for (int i = 1; i <= 25; i++) {
+        for (int i = 1; i <= 50; i++) {
             latencyAgent.evaluateGeneratedMetric(TransmissionTime);
             // rate of metrics reporting to the duration that takes the scheduler to report
             // incidents

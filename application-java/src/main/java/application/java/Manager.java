@@ -1,5 +1,6 @@
 package application.java;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,12 +8,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.hyperledger.fabric.gateway.Contract;
 import org.hyperledger.fabric.sdk.exception.CryptoException;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
+import io.prometheus.client.exporter.HTTPServer;
 
 public class Manager {
 
     private ConnectionProfile connectionProfile;
     private LocalStorage localstorage;
     BlockchainAPI api;
+    HTTPServer server;
 
 
     public Manager(ConnectionProfile connectionProfile) {
@@ -98,6 +101,12 @@ public class Manager {
 
         return result;
 
+    }
+
+    public void createMetricExporter (int port) throws IOException
+    {
+        server = new HTTPServer(port);
+        
     }
 
 
