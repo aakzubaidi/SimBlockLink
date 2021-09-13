@@ -1,0 +1,22 @@
+global:
+  scrape_interval:     5s
+  evaluation_interval: 5s
+
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  - "rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape.
+scrape_configs:
+
+  - job_name: 'Middleware'
+    scrape_interval: 1s
+    static_configs:
+      - targets: ['docker.for.mac.localhost:8000']
+
+
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets:
+        - '46.101.250.30:9093'
