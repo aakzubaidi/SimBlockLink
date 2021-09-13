@@ -35,8 +35,12 @@ public class App {
 		connectionProfile.setAdminIdentity("admin");
 		connectionProfile.setAdminSecret("adminpw");
 		connectionProfile.setClientIdentity("AliAlzubaidi2");
+		//how many times to attemp resubmitting failed transactions
+		int maxRetry = 5;
+		//Do you wish to consider all transactions' resubmission attempts as one failed transaction?
+		boolean countfailedAttampt = false;
 		
-		Manager manager = new Manager(connectionProfile);
+		Manager manager = new Manager(connectionProfile,maxRetry, countfailedAttampt);
 		manager.generateIdentity();
 		manager.createMetricExporter(8000);
 
@@ -75,7 +79,7 @@ public class App {
 		manager.createQos(contract, "presistQoS",qos);
 		
 		// schedule workers
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);														
         scheduler.scheduleAtFixedRate(new Worker(manager, contract, "reportMetric", qos), 3 , 3,
                 TimeUnit.SECONDS);
 
@@ -83,11 +87,11 @@ public class App {
 		Agent latencyAgent = new Agent(manager, qos) ;
 
 		double TransmissionTime = 3;
-        for (int i = 1; i <= 50; i++) {
+        for (int i = 1; i <= 20; i++) {
             latencyAgent.evaluateGeneratedMetric(TransmissionTime);
             // rate of metrics reporting to the duration that takes the scheduler to report
             // incidents
-        TimeUnit.SECONDS.sleep(5);
+        TimeUnit.SECONDS.sleep(1);
         }
 
 		System.out.println("Breaches: "+ manager.getQosStore().get(qos.getQosID()).getBreachCount());

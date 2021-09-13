@@ -13,7 +13,7 @@ import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.annotation.License;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-@Contract(name = "ChaincodeContract",
+@Contract(name = "chaincode",
     info = @Info(title = "Chaincode contract",
                 description = "My Smart Contract",
                 version = "0.0.1",

@@ -15,10 +15,14 @@ import io.prometheus.client.Histogram;
 
 public class BlockchainAPI {
 
-	MetricsRegistry metricsRegistry;
+	private InstrumentFactory metricsRegistry;
+	private int maxRetry;
+	private boolean countfailedAttampt;
 
-	public BlockchainAPI() {
-		metricsRegistry = new MetricsRegistry();
+	public BlockchainAPI(int maxRetry, boolean countfailedAttampt) {
+		metricsRegistry = new InstrumentFactory();
+		this.maxRetry = maxRetry;
+		this.countfailedAttampt = countfailedAttampt;
 	}
 
 	/**
@@ -33,7 +37,7 @@ public class BlockchainAPI {
 	public String submitTransaction(Contract contract, String smartContractMethod, String[] payload) throws Exception {
 
 		int attempt = 0;
-		int maxRetry = 5;
+
 
 		byte[] result = null;
 		String readableResult = null;
@@ -51,16 +55,28 @@ public class BlockchainAPI {
 			try {
 				System.out.println("Attempt " + attempt + ": submitting Transaction to contract: (" + contract
 						+ ") to invoke method: (" + smartContractMethod + ")");
-				result = contract.createTransaction("presistQoS").submit(payload);
+				result = contract.createTransaction(smartContractMethod).submit(payload);
 				readableResult = new String(result, StandardCharsets.UTF_8);
 				TransactionStatus = "success";
 				sucessCounter.inc();
 				requestTimer.observeDuration();
+
 			} catch (ContractException | InterruptedException e) {
 				e.printStackTrace();
-				failCounter.inc();
 			}
 			attempt++;
+		}
+
+		if (TransactionStatus.equals("fail")){
+
+			if (countfailedAttampt)
+			{
+				failCounter.inc();
+				
+			}else
+			{
+				failCounter.inc(maxRetry);
+			}
 		}
 
 		return readableResult;

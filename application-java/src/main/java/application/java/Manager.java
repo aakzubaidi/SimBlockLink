@@ -14,15 +14,16 @@ public class Manager {
 
     private ConnectionProfile connectionProfile;
     private LocalStorage localstorage;
-    BlockchainAPI api;
+    private BlockchainAPI api;
     HTTPServer server;
 
 
-    public Manager(ConnectionProfile connectionProfile) {
+    public Manager(ConnectionProfile connectionProfile, int maxRetry, boolean countfailedAttampt ) {
 
         localstorage = LocalStorage.getInstance();
         this.connectionProfile = connectionProfile;
-        this.api = new BlockchainAPI();
+        this.api = new BlockchainAPI( maxRetry,  countfailedAttampt);
+
     }
 
     public String generateIdentity() throws MalformedURLException, CryptoException, InvalidArgumentException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {

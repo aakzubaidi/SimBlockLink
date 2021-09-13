@@ -4,14 +4,14 @@ import java.util.HashMap;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Histogram;
 
-public class MetricsRegistry {
+public class InstrumentFactory {
 
     HashMap<String, Counter> CounterRegistry;
     HashMap<String, Histogram> HistogramRegistry;
 
 
 
-    MetricsRegistry ()
+    InstrumentFactory ()
     {
         CounterRegistry = new HashMap<String, Counter>();
         HistogramRegistry = new HashMap<String, Histogram>();
@@ -32,6 +32,9 @@ public class MetricsRegistry {
          failCounter = CounterRegistry.get(smartContractMethod+"_fail");
         return new Counter []{sucessCounter, failCounter};
     }
+
+
+    
 
     public Histogram getHistogram (String smartContractMethod) {
 
