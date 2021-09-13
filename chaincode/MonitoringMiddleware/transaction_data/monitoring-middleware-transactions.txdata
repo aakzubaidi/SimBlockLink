@@ -1,0 +1,44 @@
+[
+    {
+        "transactionName": "monitoringMiddlewareExists",
+        "transactionLabel": "A test monitoringMiddlewareExists transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "createMonitoringMiddleware",
+        "transactionLabel": "A test createMonitoringMiddleware transaction",
+        "arguments": [
+            "001",
+            "some value"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "readMonitoringMiddleware",
+        "transactionLabel": "A test readMonitoringMiddleware transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "updateMonitoringMiddleware",
+        "transactionLabel": "A test updateMonitoringMiddleware transaction",
+        "arguments": [
+            "001",
+            "some other value"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "deleteMonitoringMiddleware",
+        "transactionLabel": "A test deleteMonitoringMiddleware transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    }
+]

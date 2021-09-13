@@ -13,23 +13,14 @@ import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.annotation.License;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-@Contract(name = "chaincode",
-    info = @Info(title = "Chaincode contract",
-                description = "My Smart Contract",
-                version = "0.0.1",
-                license =
-                        @License(name = "Apache-2.0",
-                                url = ""),
-                                contact =  @Contact(email = "chaincode@example.com",
-                                                name = "chaincode",
-                                                url = "http://chaincode.me")))
+@Contract(name = "chaincode", info = @Info(title = "Gateway contract", description = "My Smart Contract", version = "0.0.1", license = @License(name = "Apache-2.0", url = ""), contact = @Contact(email = "Gateway@example.com", name = "Asset", url = "http://Gateway.me")))
 @Default
-public class ChaincodeContract implements ContractInterface {
-    public  ChaincodeContract() {
+public class Gateway implements ContractInterface {
+    public Gateway() {
 
     }
 
-     @Transaction()
+    @Transaction()
     public boolean Exists(Context ctx, String AssetId) {
         byte[] buffer = ctx.getStub().getState(AssetId);
         return (buffer != null && buffer.length > 0);
@@ -56,8 +47,8 @@ public class ChaincodeContract implements ContractInterface {
     @Transaction()
     public String reportMetric(Context ctx, String metricID, String qosID, String compliantCount, String breachCount) {
         boolean exists = Exists(ctx, metricID);
-        if (!exists) {
-            throw new RuntimeException("The metric with ID: " + metricID + " does not exist");
+        if (exists) {
+            throw new RuntimeException("The metric with ID: " + metricID + " Already Exist");
         }
         String mesaage = "";
 
@@ -80,7 +71,5 @@ public class ChaincodeContract implements ContractInterface {
         return mesaage;
     }
 
-    
-    
 
 }
