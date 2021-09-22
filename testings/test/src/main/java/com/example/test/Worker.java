@@ -10,7 +10,7 @@ public class Worker extends TimerTask{
     private String qosID;
     ConcurrentHashMap<String, QoS> qosStore;
 
-    public Worker(Manager manager, String method, QoS qos) {
+    public Worker(Manager manager, QoS qos) {
         this.submittedBreaches = 0;
         this.submittedCompliant = 0;
         this.qosID = qos.getQosID();
