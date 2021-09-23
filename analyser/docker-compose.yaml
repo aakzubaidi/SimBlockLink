@@ -43,7 +43,7 @@ services:
       - "9093:9093"
 
   grafana:
-    image: grafana/grafana:7.3.7
+    image: grafana/grafana:8.1.5
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana

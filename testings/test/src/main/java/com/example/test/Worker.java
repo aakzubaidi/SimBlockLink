@@ -2,6 +2,8 @@ package com.example.test;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
+import io.prometheus.client.Counter;
+
 public class Worker extends TimerTask{
 
 
@@ -9,12 +11,13 @@ public class Worker extends TimerTask{
     private int submittedCompliant;
     private String qosID;
     ConcurrentHashMap<String, QoS> qosStore;
-
+    private Counter workerCounter;
     public Worker(Manager manager, QoS qos) {
         this.submittedBreaches = 0;
         this.submittedCompliant = 0;
         this.qosID = qos.getQosID();
         this.qosStore = manager.getQosStore();
+        this.workerCounter = Counter.build().name("_handeled_metrics").help("This counter tracks the count of breach metrics handeled by the worker").register();
 
         System.out.println("Done consutructing");
 
@@ -30,6 +33,7 @@ public class Worker extends TimerTask{
                 // " has identified breaches about("+qosID+"). it is now reporting them to the
                 // blockchain");
                 submittedBreaches = qosStore.get(qosID).getBreachCount();
+                workerCounter.inc(submittedBreaches);
                 submittedCompliant = qosStore.get(qosID).getCompliantCount();
                 System.out.println(Thread.currentThread().getName() + ": current QoS status: Compliant count: "
                         + submittedCompliant + "|| Breach count: " + submittedBreaches);

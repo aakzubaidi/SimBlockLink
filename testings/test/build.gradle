@@ -14,6 +14,8 @@ repositories {
 
 dependencies {
 	testImplementation 'org.junit.jupiter:junit-jupiter:5.8.0'
+	implementation 'io.prometheus:simpleclient:0.12.0'
+    implementation 'io.prometheus:simpleclient_httpserver:0.12.0'
 }
 
 test {

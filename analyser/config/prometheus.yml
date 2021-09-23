@@ -1,6 +1,6 @@
 global:
-  scrape_interval:     5s
-  evaluation_interval: 5s
+  scrape_interval:     2s
+  evaluation_interval: 3s
 
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
@@ -10,7 +10,7 @@ rule_files:
 scrape_configs:
 
   - job_name: 'Middleware'
-    scrape_interval: 1s
+    scrape_interval: 2s
     static_configs:
       - targets: ['docker.for.mac.localhost:8000']
 
