@@ -42,7 +42,7 @@ public class App {
 		
 		Manager manager = new Manager(connectionProfile,maxRetry, countfailedAttampt);
 		manager.generateIdentity();
-		manager.createMetricExporter(8000);
+		manager.createMetricExporter(8004);
 
 
 
@@ -79,23 +79,27 @@ public class App {
 		manager.createQos(contract, "presistQoS",qos);
 		
 		// schedule workers
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);														
-        scheduler.scheduleAtFixedRate(new Worker(manager, contract, "reportMetric", qos), 3 , 3,
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);														
+        scheduler.scheduleAtFixedRate(new Worker(manager, contract, "reportMetric", qos), 2 , 5,
                 TimeUnit.SECONDS);
 
 
 		Agent latencyAgent = new Agent(manager, qos) ;
 
 		double TransmissionTime = 3;
-        for (int i = 1; i <= 50; i++) {
+        for (int i = 1; i <= 1000; i++) {
             latencyAgent.evaluateGeneratedMetric(TransmissionTime);
             // rate of metrics reporting to the duration that takes the scheduler to report
             // incidents
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.MILLISECONDS.sleep(100);
         }
 
-		System.out.println("Breaches: "+ manager.getQosStore().get(qos.getQosID()).getBreachCount());
-		System.out.println("Compliant: "+ manager.getQosStore().get(qos.getQosID()).getCompliantCount());
+		TimeUnit.SECONDS.sleep(40);
+		KeyTracker keyTracker = KeyTracker.getInstance();
+		System.out.println("Submitted Breaches cases: "+ keyTracker.getTotalSubmittedBreaches());
+		System.out.println("Submitted Compliant cases: "+ keyTracker.getTotalSubmittedCompliant());
+		System.out.println("current Stored Breaches: "+ manager.getQosStore().get(qos.getQosID()).getBreachCount());
+		System.out.println("current Stored Compliant: "+ manager.getQosStore().get(qos.getQosID()).getCompliantCount());
 
 
 

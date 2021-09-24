@@ -54,25 +54,30 @@ public class Worker extends TimerTask {
                 // submittedCompliant);
                 String[] payload = new String[] { keyTracker.getMetricKey(), qosID, String.valueOf(submittedCompliant),
                         String.valueOf(submittedBreaches) };
-                manager.reportMetrics(contract, method, payload);
-                int deltaBreaches = qosStore.get(qosID).getBreachCount() - submittedBreaches;
-                if (deltaBreaches >= 0) {
-                    qosStore.get(qosID).setBreachCount(deltaBreaches);
-                } else {
-                    qosStore.get(qosID).setBreachCount(0);
+                String[] transactionStatus = manager.reportMetrics(contract, method, payload);
+                if (transactionStatus[0].equals("success")) {
+                    KeyTracker.addTotalSubmittedBreaches(submittedBreaches);
+                    KeyTracker.addTotalSubmittedCompliant(submittedCompliant);
+                    int deltaBreaches = qosStore.get(qosID).getBreachCount() - submittedBreaches;
+                    if (deltaBreaches >= 0) {
+                        qosStore.get(qosID).setBreachCount(deltaBreaches);
+                    } else {
+                        qosStore.get(qosID).setBreachCount(0);
+
+                    }
+
+                    int deltaCompliant = qosStore.get(qosID).getCompliantCount() - submittedCompliant;
+                    if (deltaCompliant >= 0) {
+                        qosStore.get(qosID).setCompliantCount(deltaCompliant);
+                    } else {
+                        qosStore.get(qosID).setCompliantCount(0);
+
+                    }
+                    System.out.println(Thread.currentThread().getName()
+                            + ": Subcessfully reported metrics to blockchain \n current QoS Status: Compliant count: "
+                            + deltaCompliant + "|| Breach count: " + deltaBreaches);
 
                 }
-
-                int deltaCompliant = qosStore.get(qosID).getCompliantCount() - submittedCompliant;
-                if (deltaCompliant >= 0) {
-                    qosStore.get(qosID).setCompliantCount(deltaCompliant);
-                } else {
-                    qosStore.get(qosID).setCompliantCount(0);
-
-                }
-                System.out.println(Thread.currentThread().getName()
-                        + ": Subcessfully reported metrics to blockchain \n current QoS Status: Compliant count: "
-                        + deltaCompliant + "|| Breach count: " + deltaBreaches);
 
             } catch (Exception e) {
                 e.printStackTrace();

@@ -34,7 +34,7 @@ public class BlockchainAPI {
 	 * @return
 	 * @throws Exception
 	 */
-	public String submitTransaction(Contract contract, String smartContractMethod, String[] payload) throws Exception {
+	public String [] submitTransaction(Contract contract, String smartContractMethod, String[] payload) throws Exception {
 
 		int attempt = 0;
 
@@ -62,7 +62,9 @@ public class BlockchainAPI {
 				requestTimer.observeDuration();
 
 			} catch (ContractException | InterruptedException e) {
+				TransactionStatus = "fail";
 				e.printStackTrace();
+				
 			}
 			attempt++;
 		}
@@ -79,7 +81,7 @@ public class BlockchainAPI {
 			}
 		}
 
-		return readableResult;
+		return new String [] {TransactionStatus, readableResult};
 
 	}
 

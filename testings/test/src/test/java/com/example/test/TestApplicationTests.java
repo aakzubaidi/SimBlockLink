@@ -83,7 +83,7 @@ class TestApplicationTests {
 		manager.createQos(qos);
 
 		// schedule workers
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);														
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);														
         scheduler.scheduleAtFixedRate(new Worker(manager, qos), 2 , 5, TimeUnit.SECONDS);
 
 		Counter BreachesCounter = Counter.build().name("breach_count").help("This counter tracks the count of metrics that in violation").register();

@@ -47,9 +47,9 @@ public class Manager {
 
 
 
-    public String createQos (Contract contract, String method, QoS qos)
+    public String [] createQos (Contract contract, String method, QoS qos)
     {
-        String result = null;
+        String [] result = null;
         String[] payload = new String[] {qos.getQosID(), qos.getQosName(), qos.getLevel(), qos.getThreshold()};
         System.out.println(payload);
 
@@ -87,10 +87,10 @@ public class Manager {
 
 
    
-    public String reportMetrics (Contract contract, String method, String[] payload)
+    public String [] reportMetrics (Contract contract, String method, String[] payload)
     {
 
-        String result = null;
+        String [] result = null;
 
         try {
 			// create qyality requirment
