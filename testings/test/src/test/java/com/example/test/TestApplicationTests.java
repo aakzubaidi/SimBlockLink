@@ -5,9 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.concurrent.TimeUnit;
 import java.io.IOException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -82,15 +81,13 @@ class TestApplicationTests {
 		QoS qos = new QoS("Latency", RequieredLevel.LessThan, 1, Unit.s);
 		manager.createQos(qos);
 
-		// schedule workers
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);														
-        scheduler.scheduleAtFixedRate(new Worker(manager, qos), 2 , 5, TimeUnit.SECONDS);
-
+		manager.assignQosToWorker(manager, qos, 2, 5);
+		
 		Counter GeneratedMetricCounter = Counter.build().name("breach_count").help("This counter tracks the count of metrics that in violation").register();
 
 
 		Agent agent = new Agent(manager, qos);
-		for (int i = 1; i <= 1000; i++) {
+		for (int i = 1; i <= 100; i++) {
 
 			if (i % 2 == 0) { //breach case
 
@@ -111,9 +108,15 @@ class TestApplicationTests {
 		//assertEquals(1, manager.getQosStore().get(qos.getQosID()).getBreachCount(), "breach count should be 1");
 		//assertNotEquals(1, manager.getQosStore().get(qos.getQosID()).getCompliantCount(), "Compliant count should not be 1");
 
-		TimeUnit.SECONDS.sleep(500);
+		TimeUnit.SECONDS.sleep(90);
 	}
 
+
+
+	
+
+	@AfterAll
+	@DisplayName("Clean up after testing")
 	public static void ckeanUP (){
 		httpServer.close();
 		
