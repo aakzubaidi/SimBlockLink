@@ -86,15 +86,21 @@ class TestApplicationTests {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);														
         scheduler.scheduleAtFixedRate(new Worker(manager, qos), 2 , 5, TimeUnit.SECONDS);
 
-		Counter BreachesCounter = Counter.build().name("breach_count").help("This counter tracks the count of metrics that in violation").register();
+		Counter GeneratedMetricCounter = Counter.build().name("breach_count").help("This counter tracks the count of metrics that in violation").register();
 
 
 		Agent agent = new Agent(manager, qos);
-		for (int i = 1; i <= 100; i++) {
-            agent.evaluateGeneratedMetric(2);
-            // rate of metrics reporting to the duration that takes the scheduler to report
-            // incidents
-			BreachesCounter.inc();
+		for (int i = 1; i <= 1000; i++) {
+
+			if (i % 2 == 0) { //breach case
+
+            	agent.evaluateGeneratedMetric(2);
+				GeneratedMetricCounter.inc();
+			}
+			else {//Compliant case
+				agent.evaluateGeneratedMetric(0.5);
+				GeneratedMetricCounter.inc();
+			}
         	TimeUnit.SECONDS.sleep(1);
         }
 
@@ -105,7 +111,7 @@ class TestApplicationTests {
 		//assertEquals(1, manager.getQosStore().get(qos.getQosID()).getBreachCount(), "breach count should be 1");
 		//assertNotEquals(1, manager.getQosStore().get(qos.getQosID()).getCompliantCount(), "Compliant count should not be 1");
 
-		TimeUnit.SECONDS.sleep(200);
+		TimeUnit.SECONDS.sleep(500);
 	}
 
 	public static void ckeanUP (){

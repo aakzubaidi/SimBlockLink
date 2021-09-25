@@ -33,8 +33,9 @@ public class Worker extends TimerTask{
                 // " has identified breaches about("+qosID+"). it is now reporting them to the
                 // blockchain");
                 submittedBreaches = qosStore.get(qosID).getBreachCount();
-                workerCounter.inc(submittedBreaches);
                 submittedCompliant = qosStore.get(qosID).getCompliantCount();
+                workerCounter.inc(submittedBreaches);
+                workerCounter.inc(submittedCompliant);
                 System.out.println(Thread.currentThread().getName() + ": current QoS status: Compliant count: "
                         + submittedCompliant + "|| Breach count: " + submittedBreaches);
                 // violationRepoter.submitTransaction(qosID, submittedBreaches,
