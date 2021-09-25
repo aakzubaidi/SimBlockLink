@@ -12,8 +12,6 @@ package application.java;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.hyperledger.fabric.gateway.Gateway;
@@ -79,9 +77,7 @@ public class App {
 		manager.createQos(contract, "presistQoS",qos);
 		
 		// schedule workers
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);														
-        scheduler.scheduleAtFixedRate(new Worker(manager, contract, "reportMetric", qos), 2 , 5,
-                TimeUnit.SECONDS);
+        manager.assignQosToWorker(manager, contract, "reportMetric", qos, 2, 3);
 
 
 		Agent latencyAgent = new Agent(manager, qos) ;

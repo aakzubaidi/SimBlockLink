@@ -3,7 +3,11 @@ package application.java;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.hyperledger.fabric.gateway.Contract;
 import org.hyperledger.fabric.sdk.exception.CryptoException;
@@ -14,6 +18,7 @@ public class Manager {
 
     private ConnectionProfile connectionProfile;
     private LocalStorage localstorage;
+    private ArrayList <QoS> assignedQoS;
     private BlockchainAPI api;
     HTTPServer server;
 
@@ -21,6 +26,7 @@ public class Manager {
     public Manager(ConnectionProfile connectionProfile, int maxRetry, boolean countfailedAttampt ) {
 
         localstorage = LocalStorage.getInstance();
+        this.assignedQoS = new ArrayList<QoS>(); 
         this.connectionProfile = connectionProfile;
         this.api = new BlockchainAPI( maxRetry,  countfailedAttampt);
 
@@ -73,6 +79,22 @@ public class Manager {
     public ConcurrentHashMap<String, QoS> getQosStore() {
         return localstorage.getQosStore();
 	}
+
+    public String assignQosToWorker (Manager manager, Contract contract, String method, QoS qos, long intialDelay, long period)
+    {
+        String result = "fail: already assigned";
+
+        if (!assignedQoS.contains(qos))
+        {
+        // schedule workers
+        Worker worker = new Worker(manager, contract, method, qos);
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);														
+        scheduler.scheduleAtFixedRate(worker, intialDelay , period, TimeUnit.SECONDS);
+        result = "success: Assigned to a new worker";
+        }
+
+        return result;
+    }
 
 
     public void printQosStatus(String threadName, String threadID, QoS qos) {
