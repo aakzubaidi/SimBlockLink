@@ -17,7 +17,7 @@ public class Worker extends TimerTask{
         this.submittedCompliant = 0;
         this.qosID = qos.getQosID();
         this.qosStore = manager.getQosStore();
-        this.workerCounter = Counter.build().name("_handeled_metrics").help("This counter tracks the count of breach metrics handeled by the worker").register();
+        this.workerCounter = Counter.build().name("handeled_metrics").help("This counter tracks the count of breach metrics handeled by the worker").register();
 
         System.out.println("Done consutructing");
 
