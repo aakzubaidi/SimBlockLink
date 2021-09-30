@@ -20,19 +20,17 @@ class TestApplicationTests {
 
 	@BeforeAll
 	@DisplayName("Bringing Prometheous Exporter up!")
-	public static void setup () throws IOException{
+	public static void setup() throws IOException {
 		httpServer = new HTTPServer(8000);
-		
+
 	}
-
-
 
 	@Test
 	@DisplayName("Ensure quality requirements are created and stored in the concurrent storage")
 	public void testCreateQualityRequirements() {
 		Manager manager = new Manager();
 		QoS qos;
-		for (int i = 0; i < 8; i++) { 
+		for (int i = 0; i < 8; i++) {
 			if (i % 2 == 0) {
 				qos = new QoS(Integer.toString(i), RequieredLevel.LessThan, 2, Unit.s);
 				manager.createQos(qos);
@@ -41,13 +39,12 @@ class TestApplicationTests {
 				manager.createQos(qos);
 			}
 			assertEquals(Integer.toString(i), manager.getQosStore().get(qos.getQosID()).getQosName(),
-			" Should be Equal");
+					" Should be Equal");
 			assertNotEquals(Integer.toString(i), manager.getQosStore().get(qos.getQosID()).getQosName() + "a",
-			"Should Not be Equal!");
+					"Should Not be Equal!");
 		}
 
 	}
-
 
 	@Test
 	@DisplayName("Testing Agents Ability to identify breaches and update metrics on the concurrent Storage")
@@ -58,7 +55,8 @@ class TestApplicationTests {
 		Agent agent = new Agent(manager, qos);
 		agent.evaluateGeneratedMetric(2);
 		assertEquals(1, manager.getQosStore().get(qos.getQosID()).getBreachCount(), "breach count should be 1");
-		assertNotEquals(1, manager.getQosStore().get(qos.getQosID()).getCompliantCount(), "Compliant count should not be 1");
+		assertNotEquals(1, manager.getQosStore().get(qos.getQosID()).getCompliantCount(),
+				"Compliant count should not be 1");
 	}
 
 	@Test
@@ -73,7 +71,6 @@ class TestApplicationTests {
 		assertNotEquals(1, manager.getQosStore().get(qos.getQosID()).getBreachCount(), "breach count should not be 1");
 	}
 
-
 	@Test
 	@DisplayName("Testing Agents Ability to identify breaches and update metrics on the concurrent Storage")
 	public void testWorkerScheduling() throws Exception {
@@ -82,47 +79,45 @@ class TestApplicationTests {
 		manager.createQos(qos);
 
 		manager.assignQosToWorker(manager, qos, 2, 5);
-		
-		Counter GeneratedMetricCounter = Counter.build().name("breach_count").help("This counter tracks the count of metrics that in violation").register();
-
 
 		Agent agent = new Agent(manager, qos);
-		for (int i = 1; i <= 100; i++) {
 
-			if (i % 2 == 0) { //breach case
+		Counter GeneratedMetricCounter = Counter.build().name("generated_metrics").help("This counter tracks the count of metrics that in violation").register();
+		for (int x = 100; x <= 1000000; x *= 10) {
 
-            	agent.evaluateGeneratedMetric(2);
+			for (int i = 0; i < x; i++) {			
+
+				if (i % 2 == 0) { // breach case
+					agent.evaluateGeneratedMetric(2);
+				} else {// Compliant case
+					agent.evaluateGeneratedMetric(0.5);
+				}
 				GeneratedMetricCounter.inc();
+				TimeUnit.MILLISECONDS.sleep(10);
+				
 			}
-			else {//Compliant case
-				agent.evaluateGeneratedMetric(0.5);
-				GeneratedMetricCounter.inc();
-			}
-        	TimeUnit.SECONDS.sleep(1);
-        }
+			GeneratedMetricCounter.clear();
+			 TimeUnit.SECONDS.sleep(5);
+		}
 
-		// this is just for terminating the workers at hand! uncomment if you want to enforce termination!
-		//scheduler.awaitTermination(10, TimeUnit.SECONDS);
-		
-	
-		//assertEquals(1, manager.getQosStore().get(qos.getQosID()).getBreachCount(), "breach count should be 1");
-		//assertNotEquals(1, manager.getQosStore().get(qos.getQosID()).getCompliantCount(), "Compliant count should not be 1");
+		// this is just for terminating the workers at hand! uncomment if you want to
+		// enforce termination!
+		// scheduler.awaitTermination(10, TimeUnit.SECONDS);
 
-		TimeUnit.SECONDS.sleep(90);
+		// assertEquals(1, manager.getQosStore().get(qos.getQosID()).getBreachCount(),
+		// "breach count should be 1");
+		// assertNotEquals(1,
+		// manager.getQosStore().get(qos.getQosID()).getCompliantCount(), "Compliant
+		// count should not be 1");
+
+		TimeUnit.SECONDS.sleep(500);
 	}
-
-
-
-	
 
 	@AfterAll
 	@DisplayName("Clean up after testing")
-	public static void ckeanUP (){
+	public static void ckeanUP() {
 		httpServer.close();
-		
+
 	}
-
-
-
 
 }
