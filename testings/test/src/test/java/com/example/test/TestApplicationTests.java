@@ -81,10 +81,10 @@ class TestApplicationTests {
 		manager.assignQosToWorker(manager, qos, 2, 5);
 
 		Agent agent = new Agent(manager, qos);
+		Counter GeneratedMetricCounter = Counter.build().name("generated_metrics").help("This counter tracks the count of metrics that in violation").register();;
 
-		Counter GeneratedMetricCounter = Counter.build().name("generated_metrics").help("This counter tracks the count of metrics that in violation").register();
 		for (int x = 100; x <= 1000000; x *= 10) {
-
+		
 			for (int i = 0; i < x; i++) {			
 
 				if (i % 2 == 0) { // breach case
@@ -93,11 +93,15 @@ class TestApplicationTests {
 					agent.evaluateGeneratedMetric(0.5);
 				}
 				GeneratedMetricCounter.inc();
-				TimeUnit.MILLISECONDS.sleep(10);
+				if (x <= 100)
+				{
+				TimeUnit.SECONDS.sleep(1);
+				}
 				
 			}
-			GeneratedMetricCounter.clear();
-			 TimeUnit.SECONDS.sleep(5);
+			
+			 TimeUnit.SECONDS.sleep(10);
+			 //GeneratedMetricCounter.clear();
 		}
 
 		// this is just for terminating the workers at hand! uncomment if you want to
@@ -110,7 +114,7 @@ class TestApplicationTests {
 		// manager.getQosStore().get(qos.getQosID()).getCompliantCount(), "Compliant
 		// count should not be 1");
 
-		TimeUnit.SECONDS.sleep(500);
+		TimeUnit.SECONDS.sleep(60);
 	}
 
 	@AfterAll
