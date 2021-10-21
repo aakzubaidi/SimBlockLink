@@ -15,7 +15,9 @@ package IoTSimOsmosis.cloudsim.osmesis.examples.uti;
 import IoTSimOsmosis.cloudsim.Log;
 import IoTSimOsmosis.cloudsim.edge.core.edge.EdgeLet;
 import IoTSimOsmosis.osmosis.core.*;
+import application.java.Agent;
 
+import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,9 @@ import java.util.List;
 **/
 
 public class PrintResults_Example_3 {
+	GlobalVariable globalVariable = GlobalVariable.getInstance();
+	Agent agent;
+	
 		
 	public void printOsmesisNetwork() {
 		
@@ -173,6 +178,12 @@ public class PrintResults_Example_3 {
 	}
 	
 	public void printOsmesisApp(List<WorkflowInfo> tags) {
+		try {
+			agent = new Agent(globalVariable.getManager(), globalVariable.getQoS().get(0)) ;
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Log.printLine();				
 		Log.printLine("=========================== Osmesis App Results ========================");
 		Log.printLine(String.format("%1s %11s %18s %17s %17s %19s %20s %35s %37s %21s %29s %29s %33s %32s %23s %28s %20s %30s %33s %23s %28s %20s %30s %25s %10s"
@@ -224,6 +235,13 @@ public class PrintResults_Example_3 {
                 transactionOsmosisLetTime += let.getActualCPUTime();
             }
             transactionTotalTime = transactionTransmissionTime +  transactionOsmosisLetTime;
+            try {
+				//System.out.println("<<>><<>>counter<<>><<>>: "+ counter);
+				agent.evaluateGeneratedMetric(transactionTotalTime);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			Log.printLine(String.format("%1s %15s %15s %18s %18s %22s %25s %18s %34s %32s %24s %28s %31s %41s %18s %26s %23s %24s %44s %18s %22s %28s %23s  %28s"
 					, workflowTag.getAppId()
 					, workflowTag.getAppName()

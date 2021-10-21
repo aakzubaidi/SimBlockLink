@@ -32,7 +32,7 @@ public class App {
 		connectionProfile.setCaClientURL("https://localhost:7054");
 		connectionProfile.setAdminIdentity("admin");
 		connectionProfile.setAdminSecret("adminpw");
-		connectionProfile.setClientIdentity("AliAlzubaidi2");
+		connectionProfile.setClientIdentity("AliAlzubaidi3");
 		//how many times to attemp resubmitting failed transactions
 		int maxRetry = 5;
 		//Do you wish to consider all transactions' resubmission attempts as one failed transaction?
@@ -40,7 +40,7 @@ public class App {
 		
 		Manager manager = new Manager(connectionProfile,maxRetry, countfailedAttampt);
 		manager.generateIdentity();
-		manager.createMetricExporter(8004);
+		//manager.createMetricExporter(8004);
 
 
 

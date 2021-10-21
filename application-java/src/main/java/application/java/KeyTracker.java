@@ -12,8 +12,8 @@ public class KeyTracker {
     public static KeyTracker getInstance() {
         if (single_instance == null){
             single_instance = new KeyTracker();
-            qosKey = 35;
-            metricKey = 35;
+            qosKey = 0;
+            metricKey = 0;
             totalSubmittedBreaches = 0;
             totalSubmittedCompliant = 0;
         }
@@ -46,5 +46,20 @@ public class KeyTracker {
     public static void addTotalSubmittedCompliant(int newCompliant) {
         totalSubmittedCompliant = totalSubmittedCompliant + newCompliant;
     }
+
+
+    /**
+     * 
+     * @param qosKey
+     */
+    public static void setQosKey(long QosKey) {
+        qosKey = QosKey;
+    }
+
+    public static void setMetricKey(long MetricKey) {
+       metricKey = MetricKey;
+    }
+
+    
 
 }

@@ -4,15 +4,6 @@ package application.java;
   * @apiNote Quality requirement model and controller
   * @author Ali Alzubaidi
   */
-enum RequieredLevel {
-
-    GraterThan, LessThan, Equals;
-}
-
-enum Unit {
-
-    ms, s, m, h;
-}
 
 public class QoS {
 

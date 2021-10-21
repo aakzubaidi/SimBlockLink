@@ -21,6 +21,7 @@ public class Manager {
     private ArrayList <QoS> assignedQoS;
     private BlockchainAPI api;
     HTTPServer server;
+    KeyTracker keyTracker;
 
 
     public Manager(ConnectionProfile connectionProfile, int maxRetry, boolean countfailedAttampt ) {
@@ -132,6 +133,11 @@ public class Manager {
         
     }
 
+    public KeyTracker getKeyTracker() {
+        return KeyTracker.getInstance();
+    }
+
+    
 
 
 }

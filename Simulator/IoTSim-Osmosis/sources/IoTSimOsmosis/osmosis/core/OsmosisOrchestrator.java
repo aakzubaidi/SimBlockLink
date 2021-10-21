@@ -11,6 +11,7 @@
 
 package IoTSimOsmosis.osmosis.core;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -20,9 +21,12 @@ import IoTSimOsmosis.cloudsim.core.CloudSim;
 import IoTSimOsmosis.cloudsim.core.SimEntity;
 import IoTSimOsmosis.cloudsim.core.SimEvent;
 import IoTSimOsmosis.cloudsim.core.predicates.PredicateType;
+import IoTSimOsmosis.cloudsim.osmesis.examples.uti.GlobalVariable;
 import IoTSimOsmosis.cloudsim.sdn.Channel;
 import IoTSimOsmosis.cloudsim.sdn.Link;
 import IoTSimOsmosis.cloudsim.sdn.NetworkNIC;
+import application.java.Agent;
+import application.java.Manager;
 
 /**
  * 
@@ -34,6 +38,8 @@ import IoTSimOsmosis.cloudsim.sdn.NetworkNIC;
 
 public class OsmosisOrchestrator extends SimEntity {
 
+	
+	//int counter = 0;
 	public static List<Flow> flowList = new ArrayList<>();
 	private List<CloudDatacenter> datacentres;
     private List<SDNController> controllers;
@@ -147,11 +153,16 @@ public class OsmosisOrchestrator extends SimEntity {
 	}
 	
 	protected void processCompleteFlows(List<Channel> channels){
+		
+		
 		for(Channel ch:channels) {												
 			for (Flow flow : ch.getFinishedFlows()){
+				//counter++;
 				removeCompletedFlows(flow);
 				flow.setTransmissionTime(CloudSim.clock());
+				
 			}
+			
 		}
 	}
 	
