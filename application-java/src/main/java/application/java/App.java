@@ -73,7 +73,7 @@ public class App {
 		//define quality requirement
 		//provide (contract, quality metric name, required level, threshold)
 		//example (contract, method, latency, LessThan, 2, s)
-		QoS qos = new QoS( "latency", RequieredLevel.LessThan, 2,  Unit.s);
+		QoS qos = new QoS( "latency", RequieredLevel.LessThan, 1,  Unit.s);
 		manager.createQos(contract, "presistQoS",qos);
 		
 		// schedule workers
@@ -82,8 +82,18 @@ public class App {
 
 		Agent latencyAgent = new Agent(manager, qos) ;
 
-		double TransmissionTime = 3;
+		double TransmissionTime;
         for (int i = 1; i <= 1000; i++) {
+
+			if (i % 2 == 0)
+			{
+				TransmissionTime = 0.5;
+			}
+			else
+			{
+				TransmissionTime = 2;
+			}
+
             latencyAgent.evaluateGeneratedMetric(TransmissionTime);
             // rate of metrics reporting to the duration that takes the scheduler to report
             // incidents

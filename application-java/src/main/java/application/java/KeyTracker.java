@@ -12,8 +12,8 @@ public class KeyTracker {
     public static KeyTracker getInstance() {
         if (single_instance == null){
             single_instance = new KeyTracker();
-            qosKey = 150;
-            metricKey = 150;
+            qosKey = 35;
+            metricKey = 35;
             totalSubmittedBreaches = 0;
             totalSubmittedCompliant = 0;
         }

@@ -12,7 +12,7 @@ scrape_configs:
   - job_name: 'Middleware'
     scrape_interval: 2s
     static_configs:
-      - targets: ['docker.for.mac.localhost:8000']
+      - targets: ['docker.for.mac.localhost:8004']
 
 
 alerting:
