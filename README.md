@@ -26,3 +26,17 @@ Deploy Gateway smart contract
 ./network.sh deployCC -ccn chaincode -ccp ./MonitoringMiddleware -ccv 0.0.1 -ccl java
 ```
 
+
+# Integrating the middleware with the simulator
+## import jar file 'application-java.jar'
+## within the main method, include the following:
+###
+```java
+ConnectionProfile connectionProfile = new ConnectionProfile();
+connectionProfile.setPemFileLocation("../../fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem");
+connectionProfile.setCaClientURL("https://localhost:7054");
+connectionProfile.setAdminIdentity("admin");
+connectionProfile.setAdminSecret("adminpw");
+connectionProfile.setClientIdentity("AliAlzubaidi2");
+```
+
