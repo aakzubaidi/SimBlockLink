@@ -34,6 +34,7 @@ import java.util.List;
 public class PrintResults_Example_3 {
 	GlobalVariable globalVariable = GlobalVariable.getInstance();
 	Agent agent;
+	int counter = 0;
 	
 		
 	public void printOsmesisNetwork() {
@@ -236,7 +237,7 @@ public class PrintResults_Example_3 {
             }
             transactionTotalTime = transactionTransmissionTime +  transactionOsmosisLetTime;
             try {
-				//System.out.println("<<>><<>>counter<<>><<>>: "+ counter);
+				System.out.println("<<>><<>>counter<<>><<>>: "+ counter);
 				agent.evaluateGeneratedMetric(transactionTotalTime);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

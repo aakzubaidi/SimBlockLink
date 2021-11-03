@@ -50,13 +50,11 @@ import org.hyperledger.fabric.gateway.Contract;
 
 /**
  * 
- * @author Khaled Alwasel
- * @contact kalwasel@gmail.com
- * @since IoTSim-Osmosis 1.0
+ * @author Ali Alzubaidi by extending an existing example provided by the IoTsim-Osmosis
  * 
  **/
 
-public class OsmesisExample_3 {
+public class IntegrationExample {
 	public static final String configurationFile = "inputFiles/Example3_Configuration_Blockchain.json";
 	public static final String osmesisAppFile = "inputFiles/Example3_Worload_Blockchain.csv";
 	OsmosisBuilder topologyBuilder;
@@ -110,8 +108,8 @@ public class OsmesisExample_3 {
 		// define quality requirement
 		// provide (contract, quality metric name, required level, threshold)
 		// example (contract, method, latency, LessThan, 2, s)
-		manager.getKeyTracker().setMetricKey(45);
-		manager.getKeyTracker().setQosKey(45);
+		manager.getKeyTracker().setMetricKey(320);
+		manager.getKeyTracker().setQosKey(320);
 		
 		GlobalVariable globalVariable = GlobalVariable.getInstance();
 		globalVariable.setManager(manager);
@@ -122,7 +120,7 @@ public class OsmesisExample_3 {
 		// schedule workers
         manager.assignQosToWorker(manager, contract, "reportMetric", qos, 2, 3);
         
-		 OsmesisExample_3 osmesis = new OsmesisExample_3();
+		 IntegrationExample osmesis = new IntegrationExample();
 		 osmesis.start();
 
 	}

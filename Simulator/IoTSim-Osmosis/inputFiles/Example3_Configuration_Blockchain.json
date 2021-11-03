@@ -6559,7 +6559,7 @@
 				{
 					"name": "cloud_1_VM_1",
 					"pes": 4,
-					"mips": 300,
+					"mips": 500,
 					"ram": 1024,
 					"storage": 10000,
 					"bw": 1000,
@@ -6568,7 +6568,7 @@
 				{
 					"name": "cloud_1_VM_2",
 					"pes": 4,
-					"mips": 300,
+					"mips": 500,
 					"ram": 1024,
 					"storage": 10000,
 					"bw": 1000,

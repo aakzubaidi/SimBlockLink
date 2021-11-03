@@ -39,7 +39,7 @@ import application.java.Manager;
 public class OsmosisOrchestrator extends SimEntity {
 
 	
-	//int counter = 0;
+	int counter = 0;
 	public static List<Flow> flowList = new ArrayList<>();
 	private List<CloudDatacenter> datacentres;
     private List<SDNController> controllers;
@@ -157,13 +157,15 @@ public class OsmosisOrchestrator extends SimEntity {
 		
 		for(Channel ch:channels) {												
 			for (Flow flow : ch.getFinishedFlows()){
-				//counter++;
 				removeCompletedFlows(flow);
 				flow.setTransmissionTime(CloudSim.clock());
 				
 			}
 			
 		}
+		
+//		counter++;
+//		System.out.println("<<>><<>><<>>"+ counter + "<<>><<>><<>>");
 	}
 	
 	protected void removeCompletedFlows(Flow flow ){				
