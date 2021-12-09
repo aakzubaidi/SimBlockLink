@@ -84,7 +84,7 @@ public class IntegrationExample {
 		
 		Manager manager = new Manager(connectionProfile, maxRetry, countfailedAttampt);
 		manager.generateIdentity();
-		// manager.createMetricExporter(8004);
+		manager.createMetricExporter(8004);
 		/**
 		 * helper function for getting connected to the gateway
 		 * 
@@ -108,8 +108,8 @@ public class IntegrationExample {
 		// define quality requirement
 		// provide (contract, quality metric name, required level, threshold)
 		// example (contract, method, latency, LessThan, 2, s)
-		manager.getKeyTracker().setMetricKey(320);
-		manager.getKeyTracker().setQosKey(320);
+		manager.getKeyTracker().setMetricKey(0);
+		manager.getKeyTracker().setQosKey(0);
 		
 		GlobalVariable globalVariable = GlobalVariable.getInstance();
 		globalVariable.setManager(manager);
