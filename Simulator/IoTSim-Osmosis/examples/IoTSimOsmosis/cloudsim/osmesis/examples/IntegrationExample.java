@@ -108,8 +108,8 @@ public class IntegrationExample {
 		// define quality requirement
 		// provide (contract, quality metric name, required level, threshold)
 		// example (contract, method, latency, LessThan, 2, s)
-		manager.getKeyTracker().setMetricKey(0);
-		manager.getKeyTracker().setQosKey(0);
+		manager.getKeyTracker().setMetricKey(1200);
+		manager.getKeyTracker().setQosKey(1200);
 		
 		GlobalVariable globalVariable = GlobalVariable.getInstance();
 		globalVariable.setManager(manager);
@@ -118,7 +118,7 @@ public class IntegrationExample {
 		manager.createQos(contract, "presistQoS", qos);
 		
 		// schedule workers
-        manager.assignQosToWorker(manager, contract, "reportMetric", qos, 2, 3);
+        manager.assignQosToWorker(manager, contract, "reportMetric", qos, 0, 1);
         
 		 IntegrationExample osmesis = new IntegrationExample();
 		 osmesis.start();

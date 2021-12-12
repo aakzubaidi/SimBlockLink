@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -37,7 +38,7 @@ public class PrintResults_Example_3 {
 	int counter = 0;
 	
 		
-	public void printOsmesisNetwork() {
+	public void printOsmesisNetwork() throws InterruptedException {
 		
 		List<WorkflowInfo> tags = new ArrayList<>();
 		for(OsmesisAppDescription app : OsmesisAppsParser.appList){
@@ -178,8 +179,10 @@ public class PrintResults_Example_3 {
 					, new DecimalFormat("0.0000").format(flow.getFinishTime())));		
 	}
 	
-	public void printOsmesisApp(List<WorkflowInfo> tags) {
+	public void printOsmesisApp(List<WorkflowInfo> tags) throws InterruptedException {
+		
 		try {
+			
 			agent = new Agent(globalVariable.getManager(), globalVariable.getQoS().get(0)) ;
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -238,6 +241,7 @@ public class PrintResults_Example_3 {
             transactionTotalTime = transactionTransmissionTime +  transactionOsmosisLetTime;
             try {
 				System.out.println("<<>><<>>counter<<>><<>>: "+ counter);
+				TimeUnit.MILLISECONDS.sleep(100);
 				agent.evaluateGeneratedMetric(transactionTotalTime);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
