@@ -6,7 +6,7 @@
  ## Configuration
  ### Test Cases
  - Test 1: Compliant status 0%
- - Test 2: Compliance status 70% (needs revision)
+ - Test 2: Compliance status 66.6%
  - Test 3: Compliance status 100%
 
  # Blockchain deployment
