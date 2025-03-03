@@ -1,4 +1,4 @@
-# MonitoringMiddleware
+# SimBlockLink
  enabling transacting between simulators and hyperledger fabric
 
  # IoTsim-Osmosis Simulator with no integration
