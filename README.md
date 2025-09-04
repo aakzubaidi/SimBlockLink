@@ -1,8 +1,8 @@
 # SimBlockLink
- enabling transacting between simulators and hyperledger fabric
+ Enabling transacting between simulators and Hyperledger Fabric
 
  # IoTsim-Osmosis Simulator with no integration
- Goal making sure the simulator as expected.
+ Goal: Ensure the simulator operates as expected.
  ## Configuration
  ### Test Cases
  - Test 1: Compliant status 0%
@@ -20,7 +20,7 @@ Bring up the network:
  ./network.sh up createChannel -ca -c mychannel -s couchdb
 ```
 
-Deploy Gateway smart contract
+Deploy the Gateway smart contract.
 
 ```sh
 ./network.sh deployCC -ccn chaincode -ccp ./MonitoringMiddleware -ccv 0.0.1 -ccl java
