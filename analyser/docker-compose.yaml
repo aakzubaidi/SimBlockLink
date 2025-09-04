@@ -42,6 +42,7 @@ services:
     ports:
       - "9093:9093"
 
+  
   grafana:
     image: grafana/grafana:8.1.5
     container_name: grafana
@@ -57,3 +58,4 @@ services:
       - server-net
     ports:
       - "3000:3000"
+      
