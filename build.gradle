@@ -35,7 +35,7 @@ application {
     mainClassName = 'application.java.App'
 }
 
-// task for running the app after building dependencies
+// task for running the app after building dependencies.
 task runApp(type: Exec) {
     dependsOn build
     group = "Execution"
